@@ -20,6 +20,11 @@ class ModelConfig:
     num_epochs: int = 3
     warmup_steps: int = 500
 
+    # Batch processing parameters
+    max_batch_size: int = 16
+    batch_timeout_ms: int = 100
+    enable_dynamic_batching: bool = True
+
     # Paths
     model_path: Optional[str] = "models/kraken-text-completion"
     checkpoint_dir: Optional[str] = "models/checkpoints"
