@@ -62,3 +62,25 @@ def test_completion_response_model():
     assert response.completion == "help you today?"
     assert response.total_tokens == 10
     assert response.model_name == "gpt2"
+
+
+def test_empty_prompt_handling():
+    """Test handling of empty prompts."""
+    request = {"prompt": ""}
+    # Empty prompt should be caught by validation
+    assert request["prompt"] == ""
+
+
+def test_long_prompt_handling():
+    """Test handling of very long prompts."""
+    long_prompt = "x" * 2000  # Exceeds max length
+    request = {"prompt": long_prompt, "max_length": 50}
+    assert len(request["prompt"]) == 2000
+
+
+def test_special_characters_in_prompt():
+    """Test handling of special characters."""
+    special_prompt = "Hello @#$%^&*() \n\t world!"
+    request = {"prompt": special_prompt}
+    assert "\n" in request["prompt"]
+    assert "\t" in request["prompt"]

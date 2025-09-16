@@ -74,6 +74,14 @@ class ModelInference:
         if self.model is None:
             raise RuntimeError("Model not loaded. Call load_model() first.")
 
+        # Validate input
+        if not prompt or not prompt.strip():
+            raise ValueError("Prompt cannot be empty")
+
+        if len(prompt) > 1000:
+            logger.warning(f"Prompt length {len(prompt)} exceeds recommended maximum")
+            prompt = prompt[:1000]
+
         max_length = max_length or self.config.max_length
         temperature = temperature or self.config.temperature
         top_p = top_p or self.config.top_p
