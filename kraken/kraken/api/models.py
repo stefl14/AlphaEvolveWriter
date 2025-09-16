@@ -11,7 +11,8 @@ class CompletionRequest(BaseModel):
         ...,
         description="The text prompt to complete",
         min_length=1,
-        max_length=1000
+        max_length=1000,
+        example="Hello, how can I help you"
     )
     max_length: Optional[int] = Field(
         100,
@@ -31,6 +32,18 @@ class CompletionRequest(BaseModel):
         ge=0.1,
         le=1.0
     )
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "prompt": "Dear customer, thank you for",
+                    "max_length": 50,
+                    "temperature": 0.7
+                }
+            ]
+        }
+    }
 
 
 class CompletionResponse(BaseModel):
