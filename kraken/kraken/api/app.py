@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from kraken.api.models import CompletionRequest, CompletionResponse
 from kraken.api.endpoints import router as completion_router
+from kraken.api.middleware import LoggingMiddleware
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -33,7 +34,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Add CORS middleware
+# Add middleware
+app.add_middleware(LoggingMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -60,3 +62,15 @@ async def root():
 async def health_check():
     """Health check endpoint."""
     return {"status": "healthy"}
+
+
+@app.get("/ready")
+async def readiness_check():
+    """Readiness check endpoint for container orchestration."""
+    # Check if model is loaded
+    from kraken.api.endpoints import inference_engine
+
+    if inference_engine and inference_engine.model is not None:
+        return {"status": "ready", "model_loaded": True}
+    else:
+        return {"status": "not_ready", "model_loaded": False}
