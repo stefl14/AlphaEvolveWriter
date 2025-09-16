@@ -1,0 +1,13 @@
+[project]
+name = "kraken"
+version = "0.1.0"
+description = "Intelligent text auto-completion API for customer service messages"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "python-dotenv>=1.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
