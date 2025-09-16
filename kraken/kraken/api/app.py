@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from kraken.api.models import CompletionRequest, CompletionResponse
+from kraken.api.endpoints import router as completion_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -40,6 +41,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+app.include_router(completion_router)
 
 
 @app.get("/")

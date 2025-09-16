@@ -42,6 +42,39 @@ class CompletionResponse(BaseModel):
     model_name: str = Field(..., description="Model used for generation")
 
 
+class BatchCompletionRequest(BaseModel):
+    """Request model for batch text completion."""
+
+    prompts: List[str] = Field(
+        ...,
+        description="List of text prompts to complete",
+        min_items=1,
+        max_items=10
+    )
+    max_length: Optional[int] = Field(
+        100,
+        description="Maximum length of each completion",
+        ge=10,
+        le=500
+    )
+    temperature: Optional[float] = Field(
+        0.7,
+        description="Sampling temperature for text generation",
+        ge=0.1,
+        le=2.0
+    )
+
+
+class BatchCompletionResponse(BaseModel):
+    """Response model for batch text completion."""
+
+    completions: List[CompletionResponse] = Field(
+        ...,
+        description="List of completions"
+    )
+    total_prompts: int = Field(..., description="Total number of prompts processed")
+
+
 class ErrorResponse(BaseModel):
     """Error response model."""
 
